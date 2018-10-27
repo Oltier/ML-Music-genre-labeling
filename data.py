@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 
 train_data_path = "data/train_data.csv"
 labels_path = "data/train_labels.csv"
-
+test_data_path = "data/test_data.csv"
 
 def load_data_train_test_data():
     genres_labels = np.array(pd.read_csv(labels_path, index_col=False, header=None))
@@ -19,3 +19,14 @@ def load_data_train_test_data():
     test_x = test[:, :number_of_cols - 1]
     test_y = test[:, number_of_cols - 1]
     return train_x, train_y, test_x, test_y, genres
+
+
+def load_test_data():
+    return np.array(pd.read_csv(test_data_path, index_col=False))
+
+
+def write_accuracy(data):
+    headers = ['Sample_id', 'Sample_label']
+    accuary_result_path = "results/accuracy.csv"
+    pd.DataFrame(data).to_csv(accuary_result_path, header=headers, index=False)
+    print("Saved accuracy.csv")
