@@ -6,6 +6,7 @@ train_data_path = "data/train_data.csv"
 labels_path = "data/train_labels.csv"
 test_data_path = "data/test_data.csv"
 
+
 def load_data_train_test_data():
     genres_labels = np.array(pd.read_csv(labels_path, index_col=False, header=None))
     genres = range(1, 11)
@@ -25,8 +26,23 @@ def load_test_data():
     return np.array(pd.read_csv(test_data_path, index_col=False))
 
 
+def load_train_data():
+    return np.array(pd.read_csv(train_data_path, index_col=False))
+
+
 def write_accuracy(data):
-    headers = ['Sample_id', 'Sample_label']
+    headers = ['Sample_label']
     accuary_result_path = "results/accuracy.csv"
-    pd.DataFrame(data).to_csv(accuary_result_path, header=headers, index=False)
+    pd.DataFrame(data).to_csv(accuary_result_path, header=headers, index=True, index_label='Sample_id')
     print("Saved accuracy.csv")
+
+
+def write_logloss(data):
+    headers = list(map(lambda i: "Class_" + str(i), list(range(1, 11))))
+    logloss_result_path = "results/logloss.csv"
+    pd.DataFrame(data).to_csv(logloss_result_path, header=headers, index=True, index_label='Sample_id')
+    print("Saved logloss.csv")
+
+
+def get_genres():
+    return np.array(pd.read_csv(labels_path, index_col=False, header=None))

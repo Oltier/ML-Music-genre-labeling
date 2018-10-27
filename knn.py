@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.metrics import log_loss
 from sklearn.neighbors import KNeighborsClassifier
 
-from data import load_data_train_test_data, load_test_data, write_accuracy
+from data import load_data_train_test_data, load_test_data, write_accuracy, get_genres, load_train_data, write_logloss
 from visualize import plot_cnf
 
 train_x, train_y, test_x, test_y, genres = load_data_train_test_data()
@@ -35,15 +36,16 @@ test_data = load_test_data()
 N = test_data.shape[0]
 predictions = knn.predict(test_data)
 
-ids = np.arange(1, len(predictions) + 1)
-# print(len(ids), len(predictions))
-
 predictions = predictions.reshape((predictions.shape[0], 1))
-ids = ids.reshape((ids.shape[0], 1))
 
-data = np.append(ids, predictions, axis=1).astype(np.uint64)
-write_accuracy(data)
+accuracy_data = predictions.astype(np.uint64)
+write_accuracy(accuracy_data)
 
 
-print(len(ids), len(predictions))
+train_data = load_train_data()
+y_pred = knn.predict_proba(train_data)
+
+write_logloss(y_pred)
+
+print()
 # plt.show()
