@@ -33,14 +33,18 @@ def load_train_data():
 def write_accuracy(data):
     headers = ['Sample_label']
     accuary_result_path = "results/accuracy.csv"
-    pd.DataFrame(data).to_csv(accuary_result_path, header=headers, index=True, index_label='Sample_id')
+    df = pd.DataFrame(data)
+    df.index = np.arange(1, len(df) + 1)
+    df.to_csv(accuary_result_path, header=headers, index=True, index_label='Sample_id')
     print("Saved accuracy.csv")
 
 
 def write_logloss(data):
     headers = list(map(lambda i: "Class_" + str(i), list(range(1, 11))))
     logloss_result_path = "results/logloss.csv"
-    pd.DataFrame(data).to_csv(logloss_result_path, header=headers, index=True, index_label='Sample_id')
+    df = pd.DataFrame(data)
+    df.index = np.arange(1, len(df) + 1)
+    df.to_csv(logloss_result_path, header=headers, index=True, index_label='Sample_id')
     print("Saved logloss.csv")
 
 

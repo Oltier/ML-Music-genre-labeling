@@ -42,8 +42,7 @@ accuracy_data = predictions.astype(np.uint64)
 write_accuracy(accuracy_data)
 
 
-train_data = load_train_data()
-y_pred = knn.predict_proba(train_data)
+y_pred = knn.predict_proba(test_data)
 
 write_logloss(y_pred)
 
