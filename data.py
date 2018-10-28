@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 
 train_data_path = "train_data.csv"
@@ -13,9 +14,12 @@ def load_data_train_test_data():
     training_data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
     training_data_set = np.append(training_data_set, genres_labels, 1)
     number_of_cols = training_data_set.shape[1]
-    train, test = train_test_split(training_data_set, test_size=0.85, random_state=2, stratify=training_data_set[:, number_of_cols - 1])
+    train, test = train_test_split(training_data_set, test_size=0.25, random_state=12, stratify=training_data_set[:, number_of_cols - 1])
     train_x = train[:, :number_of_cols - 1]
     train_y = train[:, number_of_cols - 1]
+
+    # sm = SMOTE()
+    # x_train_res, y_train_res = sm.fit_resample(train_x, train_y)
 
     test_x = test[:, :number_of_cols - 1]
     test_y = test[:, number_of_cols - 1]
