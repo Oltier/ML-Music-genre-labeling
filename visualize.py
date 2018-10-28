@@ -2,12 +2,12 @@ import itertools
 
 import matplotlib.pyplot as plt
 import numpy as np
-import sklearn
+from sklearn.metrics import confusion_matrix
 
 
-def confusion_matrix(cm, classes,
-                     title='Confusion matrix',
-                     cmap=plt.cm.Blues):
+def draw_confusion_matrix(cm, classes,
+                          title='Confusion matrix',
+                          cmap=plt.cm.Blues):
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title)
     plt.colorbar()
@@ -37,6 +37,6 @@ def plot_cnf(model, dataset_x, dataset_y, GENRES):
     # print("Real Test dataset labels: \n{}\n".format(true_y))
     # print("Predicted Test dataset labels: \n{}".format(pred))
 
-    cnf_matrix = sklearn.metrics.confusion_matrix(true_y, pred)
+    cnf_matrix = confusion_matrix(true_y, pred)
     plt.figure()
-    a = confusion_matrix(cnf_matrix, classes=GENRES, title='Confusion matrix')
+    draw_confusion_matrix(cnf_matrix, classes=GENRES, title='Confusion matrix')
