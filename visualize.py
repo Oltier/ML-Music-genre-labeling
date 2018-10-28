@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
 
+from data import get_genres
+
 
 def draw_confusion_matrix(cm, classes,
                           title='Confusion matrix',
@@ -40,3 +42,24 @@ def plot_cnf(model, dataset_x, dataset_y, GENRES):
     cnf_matrix = confusion_matrix(true_y, pred)
     plt.figure()
     draw_confusion_matrix(cnf_matrix, classes=GENRES, title='Confusion matrix')
+
+
+def histogram(data):
+    genres_labels = get_genres()
+    genres = ['Pop_Rock',
+              'Electronic',
+              'Rap',
+              'Jazz',
+              'Latin',
+              'RnB',
+              'International',
+              'Country',
+              'Reggae',
+              'Blues']
+    genres_labels = np.array(list(map(lambda id: id - 1, genres_labels)))
+
+    plt.figure(1)
+    plt.title("Histogram of labels for training data")
+    counts, bins, patches = plt.hist(genres_labels, bins=len(genres))
+    plt.xticks(bins)
+    plt.show()
