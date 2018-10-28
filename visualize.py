@@ -44,7 +44,7 @@ def plot_cnf(model, dataset_x, dataset_y, GENRES):
     draw_confusion_matrix(cnf_matrix, classes=GENRES, title='Confusion matrix')
 
 
-def histogram(data):
+def histogram():
     genres_labels = get_genres()
     genres = ['Pop_Rock',
               'Electronic',
@@ -56,10 +56,15 @@ def histogram(data):
               'Country',
               'Reggae',
               'Blues']
-    genres_labels = np.array(list(map(lambda id: id - 1, genres_labels)))
+    # genres_labels = np.array(list(map(lambda id: id - 1, genres_labels)))
 
     plt.figure(1)
     plt.title("Histogram of labels for training data")
-    counts, bins, patches = plt.hist(genres_labels, bins=len(genres))
-    plt.xticks(bins)
+    bins = np.arange(1, 12) - 0.5
+    plt.hist(genres_labels, bins=bins, rwidth=0.75)
+    plt.xticks(range(1, 11))
+    plt.xlim([0.5, 10.5])
+    plt.xlabel(genres)
     plt.show()
+
+
