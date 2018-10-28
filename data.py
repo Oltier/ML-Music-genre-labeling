@@ -10,10 +10,10 @@ test_data_path = "test_data.csv"
 def load_data_train_test_data():
     genres_labels = np.array(pd.read_csv(labels_path, index_col=False, header=None))
     genres = range(1, 11)
-    data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
-    data_set = np.append(data_set, genres_labels, 1)
-    number_of_cols = data_set.shape[1]
-    train, test = train_test_split(data_set, test_size=0.85, random_state=2, stratify=data_set[:, number_of_cols - 1])
+    training_data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
+    training_data_set = np.append(training_data_set, genres_labels, 1)
+    number_of_cols = training_data_set.shape[1]
+    train, test = train_test_split(training_data_set, test_size=0.85, random_state=2, stratify=training_data_set[:, number_of_cols - 1])
     train_x = train[:, :number_of_cols - 1]
     train_y = train[:, number_of_cols - 1]
 

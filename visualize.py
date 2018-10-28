@@ -56,15 +56,12 @@ def histogram():
               'Country',
               'Reggae',
               'Blues']
-    # genres_labels = np.array(list(map(lambda id: id - 1, genres_labels)))
 
     plt.figure(1)
-    plt.title("Histogram of labels for training data")
-    bins = np.arange(1, 12) - 0.5
-    plt.hist(genres_labels, bins=bins, rwidth=0.75)
-    plt.xticks(range(1, 11))
+    plt.title("Distribution of genres in the training data")
+    original_bins = np.arange(1, 12) - 0.5
+    counts, bins, patches = plt.hist(genres_labels, bins=original_bins, rwidth=0.75)
+    plt.xticks(range(1, 11), genres, rotation='vertical')
+    plt.yticks(np.arange(0, np.max(counts), 150))
     plt.xlim([0.5, 10.5])
-    plt.xlabel(genres)
     plt.show()
-
-
