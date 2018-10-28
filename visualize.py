@@ -6,10 +6,22 @@ from sklearn.metrics import confusion_matrix
 
 from data import get_genres
 
+genres = ['Pop_Rock',
+          'Electronic',
+          'Rap',
+          'Jazz',
+          'Latin',
+          'RnB',
+          'International',
+          'Country',
+          'Reggae',
+          'Blues']
 
-def draw_confusion_matrix(cm, classes,
-                          title='Confusion matrix',
-                          cmap=plt.cm.Blues):
+
+def draw_confusion_matrix(cm: np.ndarray, classes, title='Confusion matrix', cmap=plt.cm.Blues):
+    # Normalize
+    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title)
     plt.colorbar()
@@ -18,8 +30,10 @@ def draw_confusion_matrix(cm, classes,
     plt.yticks(tick_marks, classes)
 
     thresh = cm.max() / 2.
+    fmt = '.2f'
+
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        plt.text(j, i, cm[i, j],
+        plt.text(j, i, format(cm[i, j], fmt),
                  horizontalalignment="center",
                  color="white" if cm[i, j] > thresh else "black")
 
@@ -29,33 +43,16 @@ def draw_confusion_matrix(cm, classes,
     plt.show()
 
 
-def plot_cnf(model, dataset_x, dataset_y, GENRES):
-    true_y = dataset_y
-    true_x = dataset_x
-    pred = model.predict(true_x)
-
+def plot_cnf(model, true_x, true_y):
     print("---------------PERFORMANCE ANALYSIS FOR THE MODEL----------------\n")
-
-    # print("Real Test dataset labels: \n{}\n".format(true_y))
-    # print("Predicted Test dataset labels: \n{}".format(pred))
-
+    pred = model.predict(true_x)
     cnf_matrix = confusion_matrix(true_y, pred)
     plt.figure()
-    draw_confusion_matrix(cnf_matrix, classes=GENRES, title='Confusion matrix')
+    draw_confusion_matrix(cnf_matrix, classes=genres, title='Confusion matrix')
 
 
 def histogram():
     genres_labels = get_genres()
-    genres = ['Pop_Rock',
-              'Electronic',
-              'Rap',
-              'Jazz',
-              'Latin',
-              'RnB',
-              'International',
-              'Country',
-              'Reggae',
-              'Blues']
 
     plt.figure(1)
     plt.title("Distribution of genres in the training data")
