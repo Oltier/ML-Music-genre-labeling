@@ -9,6 +9,7 @@ train_x, train_y, test_x, test_y, genres = load_data_train_test_data()
 
 results_knn = []
 for i in range(1, 11):
+    print(i, "th neighbor.")
     knn = KNeighborsClassifier(n_neighbors=i)
     knn.fit(train_x, train_y)
     results_knn.append(knn.score(test_x, test_y))
@@ -20,14 +21,13 @@ print("Max Accuracy is {:.3f} on test dataset with {} neighbors.\n".format(max_a
 plt.plot(np.arange(1, 11), results_knn)
 plt.xlabel("n Neighbors")
 plt.ylabel("Accuracy")
+plt.show()
 
-best_k = 9
+best_k = 1
 knn = KNeighborsClassifier(n_neighbors=best_k)
 knn.fit(train_x, train_y)
 print("Training Score: {:.3f}".format(knn.score(train_x, train_y)))
 print("Test score: {:.3f}".format(knn.score(test_x, test_y)))
-
-plot_cnf(knn, test_x, test_y)
 
 
 test_data = load_test_data()
@@ -35,6 +35,8 @@ N = test_data.shape[0]
 predictions = knn.predict(test_data)
 
 predictions = predictions.reshape((predictions.shape[0], 1))
+
+plot_cnf(knn, test_data, predictions)
 
 accuracy_data = predictions.astype(np.uint64)
 write_accuracy(accuracy_data)
