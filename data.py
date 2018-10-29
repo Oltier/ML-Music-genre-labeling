@@ -11,7 +11,7 @@ train_data_path = "train_data.csv"
 labels_path = "train_labels.csv"
 test_data_path = "test_data.csv"
 
-pca = PCA(.90)
+pca = PCA(79)
 scaler = StandardScaler()
 
 def get_pca():
@@ -22,6 +22,8 @@ def load_data_train_test_data():
     genres_labels = np.array(pd.read_csv(labels_path, index_col=False, header=None))
     genres = range(1, 11)
     training_data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
+    # pca = PCA(components)
+    # scaler = StandardScaler()
     training_data_set = scaler.fit_transform(training_data_set)
     training_data_set = pca.fit_transform(training_data_set)
     training_data_set = np.append(training_data_set, genres_labels, 1)

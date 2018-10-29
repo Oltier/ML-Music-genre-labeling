@@ -10,7 +10,7 @@ from visualize import plot_cnf
 train_x, train_y, test_x, test_y, genres = load_data_train_test_data()
 
 
-logreg = LogisticRegression()
+logreg = LogisticRegression(solver='liblinear', multi_class='ovr')
 logreg.fit(train_x, train_y)
 scores = cross_val_score(logreg, train_x, train_y, cv=5, scoring='accuracy')
 print("Cross val accuracy: ", scores.mean(), scores.std())
