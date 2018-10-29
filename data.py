@@ -2,17 +2,28 @@ import numpy as np
 import pandas as pd
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler, NearMiss
+from sklearn import preprocessing
+from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 train_data_path = "train_data.csv"
 labels_path = "train_labels.csv"
 test_data_path = "test_data.csv"
+
+pca = PCA(.90)
+scaler = StandardScaler()
+
+def get_pca():
+    return scaler, pca
 
 
 def load_data_train_test_data():
     genres_labels = np.array(pd.read_csv(labels_path, index_col=False, header=None))
     genres = range(1, 11)
     training_data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
+    training_data_set = scaler.fit_transform(training_data_set)
+    training_data_set = pca.fit_transform(training_data_set)
     training_data_set = np.append(training_data_set, genres_labels, 1)
     number_of_cols = training_data_set.shape[1]
     train, test = train_test_split(training_data_set, test_size=0.25, random_state=12, stratify=training_data_set[:, number_of_cols - 1])
@@ -22,8 +33,12 @@ def load_data_train_test_data():
     # sm = SMOTE()
     # x_train_res, y_train_res = sm.fit_resample(train_x, train_y)
 
+    # train_x = preprocessing.normalize(train_x, norm='l2')
+
     test_x = test[:, :number_of_cols - 1]
     test_y = test[:, number_of_cols - 1]
+
+
     return train_x, train_y, test_x, test_y, genres
 
 
