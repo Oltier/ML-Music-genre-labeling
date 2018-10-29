@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from imblearn.over_sampling import SMOTE
+from imblearn.over_sampling import SMOTE, RandomOverSampler
 from imblearn.under_sampling import RandomUnderSampler, NearMiss
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
