@@ -47,5 +47,4 @@ y_pred = knn.predict_proba(test_data)
 
 write_logloss(y_pred)
 
-print()
 # plt.show()

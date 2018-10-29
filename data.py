@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler, NearMiss
 from sklearn.model_selection import train_test_split
 
 train_data_path = "train_data.csv"
