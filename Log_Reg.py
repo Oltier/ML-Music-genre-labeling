@@ -4,10 +4,10 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 
-from data import load_data_train_test_data, load_test_data, write_accuracy, write_logloss, get_pca
+from data import load_data_train_test_data, load_test_data, write_accuracy, write_logloss
 from visualize import plot_cnf
 
-train_x, train_y, test_x, test_y, genres = load_data_train_test_data()
+train_x, train_y, test_x, test_y, genres, scaler, pca = load_data_train_test_data()
 
 
 logreg = LogisticRegression(solver='liblinear', multi_class='ovr')
@@ -22,7 +22,6 @@ plot_cnf(logreg, test_x, test_y)
 
 test_data = load_test_data()
 
-scaler, pca = get_pca()
 test_data = scaler.transform(test_data)
 test_data = pca.transform(test_data)
 
