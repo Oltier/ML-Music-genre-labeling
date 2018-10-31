@@ -18,8 +18,6 @@ print("Training Score: {:.3f}".format(logreg.score(train_x, train_y)))
 # TODO Ha kéne confusion matrix, akkor előkapjuk ezt
 # plot_cnf(logreg, test_x, test_y)
 
-# TODO Train stuff, predict then retrain on the predicted.
-
 test_data = load_test_data()
 
 rythym = test_data[:, :168]

@@ -121,9 +121,6 @@ def load_train_data_with_PCA_per_type():
     genres = range(1, 11)
     training_data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
 
-    sm = SMOTE()
-    training_data_set, genres_labels = sm.fit_resample(training_data_set, genres_labels)
-
     rythym = training_data_set[:, :168]
     chroma = training_data_set[:, 169:216]
     mfcc = training_data_set[:, 220:]
@@ -150,6 +147,8 @@ def load_train_data_with_PCA_per_type():
 
     training_data_set = np.concatenate((rythym, chroma, mfcc), axis=1)
 
+    # sm = SMOTE()
+    # train_x, train_y = sm.fit_resample(train_x, train_y)
 
     # train_x = preprocessing.normalize(train_x, norm='l2')
 
