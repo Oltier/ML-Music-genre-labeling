@@ -3,10 +3,13 @@ from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 
-from data import load_test_data, write_accuracy, write_logloss, load_train_data_with_PCA_per_type
+from data import load_test_data, write_accuracy, write_logloss, load_train_data_with_PCA_per_type, \
+    load_train_data_with_PCA_per_type_remove_some_columns
 from visualize import plot_cnf
 
-train_x, train_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type()
+which_column = 240
+
+train_x, train_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type_remove_some_columns(which_column)
 
 logreg = LogisticRegression(solver='lbfgs', multi_class='multinomial', max_iter=4000, random_state=0, penalty='l2')
 logreg.fit(train_x, train_y)
@@ -20,9 +23,9 @@ print("Training Score: {:.3f}".format(logreg.score(train_x, train_y)))
 
 test_data = load_test_data()
 
-rythym = test_data[:, :168]
+rythym = test_data[:, :169]
 chroma = test_data[:, 169:216]
-mfcc = test_data[:, 220:]
+mfcc = np.concatenate((test_data[:, 216:which_column], test_data[:, which_column + 1:]), axis=1)
 
 rythym = scaler_rythym.fit_transform(rythym)
 chroma = scaler_chroma.fit_transform(chroma)
