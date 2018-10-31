@@ -154,7 +154,7 @@ def load_train_data_with_PCA_per_type():
     train_y = train[:, number_of_cols - 1]
 
     # sm = SMOTE()
-    # x_train_res, y_train_res = sm.fit_resample(train_x, train_y)
+    # train_x, train_y = sm.fit_resample(train_x, train_y)
 
     # train_x = preprocessing.normalize(train_x, norm='l2')
 
