@@ -21,8 +21,8 @@ print("Training Score: {:.3f}".format(logreg.score(train_x, train_y)))
 test_data = load_test_data()
 
 rythym = test_data[:, :168]
-chroma = test_data[:, 169:216]
-mfcc = test_data[:, 217:]
+chroma = test_data[:, 168:216]
+mfcc = test_data[:, 216:]
 
 rythym = scaler_rythym.fit_transform(rythym)
 chroma = scaler_chroma.fit_transform(chroma)

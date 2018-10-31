@@ -123,7 +123,7 @@ def load_train_data_with_PCA_per_type():
 
     rythym = training_data_set[:, :168]
     chroma = training_data_set[:, 169:216]
-    mfcc = training_data_set[:, 217:]
+    mfcc = training_data_set[:, 220:]
 
     # pca_rythym = PCA(0.8)
     # pca_chroma = PCA(0.8)
