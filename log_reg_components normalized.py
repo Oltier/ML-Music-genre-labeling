@@ -6,16 +6,17 @@ from sklearn.model_selection import cross_val_score
 from data import load_test_data, write_accuracy, write_logloss, load_train_data_with_PCA_per_type
 from visualize import plot_cnf
 
-train_x, train_y, test_x, test_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type()
+train_x, train_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type()
 
-logreg = LogisticRegression(solver='lbfgs', multi_class='multinomial', max_iter=1000)
+logreg = LogisticRegression(solver='lbfgs', multi_class='multinomial', max_iter=4000, random_state=0, penalty='l2')
 logreg.fit(train_x, train_y)
 scores = cross_val_score(logreg, train_x, train_y, cv=5, scoring='accuracy')
 print("Cross val accuracy: ", scores.mean(), scores.std())
 print("Training Score: {:.3f}".format(logreg.score(train_x, train_y)))
-print("Test score: {:.3f}".format(logreg.score(test_x, test_y)))
+# print("Test score: {:.3f}".format(logreg.score(test_x, test_y)))
 
-plot_cnf(logreg, test_x, test_y)
+# TODO Ha kéne confusion matrix, akkor előkapjuk ezt
+# plot_cnf(logreg, test_x, test_y)
 
 test_data = load_test_data()
 

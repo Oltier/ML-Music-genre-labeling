@@ -1,7 +1,9 @@
 import itertools
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.ticker import FuncFormatter
 from sklearn.metrics import confusion_matrix
 
 from data import get_genres
