@@ -20,7 +20,7 @@ print("Training Score: {:.3f}".format(logreg.score(train_x, train_y)))
 
 test_data = load_test_data()
 
-rythym = test_data[:, :168]
+rythym = np.concatenate((test_data[:, :73], test_data[:, 74:168]), axis=1)
 chroma = test_data[:, 169:216]
 mfcc = test_data[:, 220:]
 
