@@ -8,7 +8,7 @@ from visualize import plot_cnf
 
 train_x, train_y, test_x, test_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type()
 
-logreg = LogisticRegression(solver='liblinear', multi_class='ovr', max_iter=1000)
+logreg = LogisticRegression(solver='lbfgs', multi_class='multinomial', max_iter=1000)
 logreg.fit(train_x, train_y)
 scores = cross_val_score(logreg, train_x, train_y, cv=5, scoring='accuracy')
 print("Cross val accuracy: ", scores.mean(), scores.std())
