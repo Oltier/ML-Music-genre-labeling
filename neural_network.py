@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn import preprocessing
+from sklearn.model_selection import cross_val_score
 from sklearn.neural_network import MLPClassifier
 
 from data import load_data_train_test_data, load_test_data, write_accuracy, write_logloss, \
@@ -10,6 +11,8 @@ train_x, train_y, test_x, test_y, genres, scaler_rythym, scaler_chroma, scaler_m
 
 neural = MLPClassifier(max_iter=400, random_state=2, hidden_layer_sizes=[40, 40])
 neural.fit(train_x, train_y)
+scores = cross_val_score(neural, train_x, train_y, cv=5, scoring='accuracy')
+print("Cross val accuracy: ", scores.mean(), scores.std())
 print("Training Score: {:.3f}".format(neural.score(train_x, train_y)))
 print("Test score: {:.3f}".format(neural.score(test_x, test_y)))
 

@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
+from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 
 from data import load_data_train_test_data, load_test_data, write_accuracy, write_logloss, \
@@ -10,27 +11,29 @@ from visualize import plot_cnf
 train_x, train_y, test_x, test_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type()
 
 
-results_knn = []
-n_tests = np.arange(1, 50)
-for i in n_tests:
-    print(i, "th neighbor")
-    knn = KNeighborsClassifier(n_neighbors=i)
-    knn.fit(train_x, train_y)
-    results_knn.append(knn.score(test_x, test_y))
-
-max_accuracy_knn = max(results_knn)
-best_k = 1 + results_knn.index(max(results_knn))
-print("Max Accuracy is {:.3f} on test dataset with {} neighbors.\n".format(max_accuracy_knn, best_k))
-
-plt.plot(n_tests, results_knn)
-plt.xlabel("n Neighbors")
-plt.ylabel("Accuracy")
+# results_knn = []
+# n_tests = np.arange(1, 50)
+# for i in n_tests:
+#     print(i, "th neighbor")
+#     knn = KNeighborsClassifier(n_neighbors=i)
+#     knn.fit(train_x, train_y)
+#     results_knn.append(knn.score(test_x, test_y))
 #
-plt.show()
+# max_accuracy_knn = max(results_knn)
+# best_k = 1 + results_knn.index(max(results_knn))
+# print("Max Accuracy is {:.3f} on test dataset with {} neighbors.\n".format(max_accuracy_knn, best_k))
 #
-# best_k = 26
+# plt.plot(n_tests, results_knn)
+# plt.xlabel("n Neighbors")
+# plt.ylabel("Accuracy")
+
+# plt.show()
+
+best_k = 26
 knn = KNeighborsClassifier(n_neighbors=best_k)
 knn.fit(train_x, train_y)
+scores = cross_val_score(knn, train_x, train_y, cv=5, scoring='accuracy')
+print("Cross val accuracy: ", scores.mean(), scores.std())
 print("Training Score: {:.3f}".format(knn.score(train_x, train_y)))
 print("Test score: {:.3f}".format(knn.score(test_x, test_y)))
 
