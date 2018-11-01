@@ -1,14 +1,17 @@
 import numpy as np
 import pandas as pd
-from imblearn.over_sampling import SMOTE
+from imblearn.over_sampling import BorderlineSMOTE
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
+from sklearn.ensemble import IsolationForest
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.neighbors import LocalOutlierFactor
+from sklearn.preprocessing import StandardScaler
 
 train_data_path = "train_data.csv"
 labels_path = "train_labels.csv"
 test_data_path = "test_data.csv"
+
 
 def load_data_train_test_data():
     genres_labels = np.array(pd.read_csv(labels_path, index_col=False, header=None))
@@ -153,7 +156,65 @@ def load_train_data_with_PCA_per_type():
     # train_x = preprocessing.normalize(train_x, norm='l2')
 
     return training_data_set, genres_labels, genres, scaler_rythym, scaler_chroma, scaler_mfcc \
-           # pca_rythym, pca_chroma, pca_mfcc
+        # pca_rythym, pca_chroma, pca_mfcc
+
+
+def visualisation_data():
+    genres_labels = np.array(pd.read_csv(labels_path, index_col=False, header=None))
+    genres_labels = genres_labels.reshape((genres_labels.shape[0],))
+    genres = range(1, 11)
+    training_data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
+
+    rythym = np.concatenate((training_data_set[:, :73], training_data_set[:, 74:168]), axis=1)
+    chroma = training_data_set[:, 169:216]
+    mfcc = training_data_set[:, 220:]
+
+    # pca_rythym = PCA(0.8)
+    # pca_chroma = PCA(0.8)
+    # pca_mfcc = PCA(0.8)
+
+    scaler_rythym = StandardScaler()
+    scaler_chroma = StandardScaler()
+    scaler_mfcc = StandardScaler()
+
+    rythym = scaler_rythym.fit_transform(rythym)
+    chroma = scaler_chroma.fit_transform(chroma)
+    mfcc = scaler_mfcc.fit_transform(mfcc)
+
+    # rythym = pca_rythym.fit_transform(rythym)
+    # chroma = pca_chroma.fit_transform(chroma)
+    # mfcc = pca_mfcc.fit_transform(mfcc)
+
+    training_data_set = np.concatenate((rythym, chroma, mfcc), axis=1)
+
+    inliers_training_set = np.empty((0, 258))
+    labels = np.empty((0, 1))
+
+    for i in genres:
+        genre_indices = np.where(genres_labels == i)[0]
+        class_x_i = training_data_set[genre_indices]
+        genre_y_i = genres_labels[genre_indices]
+        lof = LocalOutlierFactor(contamination='auto', algorithm='auto')
+        outlier_factor = lof.fit_predict(class_x_i)
+        inlier_indeces = np.where(outlier_factor == 1)[0]
+        class_x_i = class_x_i[inlier_indeces]
+        genre_y_i = genre_y_i[inlier_indeces]
+        inliers_training_set = np.append(inliers_training_set, class_x_i, axis=0)
+        labels = np.append(labels, genre_y_i)
+        print(i, "th processed")
+
+    training_data_set = inliers_training_set
+    genres_labels = labels
+
+    pca = PCA(2)
+    training_data_set = pca.fit_transform(training_data_set, genres_labels)
+
+    # sm = SMOTE()
+    # train_x, train_y = sm.fit_resample(train_x, train_y)
+
+    # train_x = preprocessing.normalize(train_x, norm='l2')
+
+    return training_data_set, genres_labels, genres
 
 
 def load_train_data_with_PCA_per_type_drop_column(which_column):
@@ -163,12 +224,14 @@ def load_train_data_with_PCA_per_type_drop_column(which_column):
     training_data_set = np.array(pd.read_csv(train_data_path, index_col=False, header=None))
 
     if 0 <= which_column < 168:
-        rythym = np.concatenate((training_data_set[:, :which_column], training_data_set[:, which_column + 1:168]), axis=1)
+        rythym = np.concatenate((training_data_set[:, :which_column], training_data_set[:, which_column + 1:168]),
+                                axis=1)
         chroma = training_data_set[:, 169:216]
         mfcc = training_data_set[:, 220:]
     elif 169 <= which_column < 216:
         rythym = training_data_set[:, :168]
-        chroma = np.concatenate((training_data_set[:, 169:which_column], training_data_set[:, which_column + 1:216]), axis=1)
+        chroma = np.concatenate((training_data_set[:, 169:which_column], training_data_set[:, which_column + 1:216]),
+                                axis=1)
         mfcc = training_data_set[:, 220:]
     else:
         rythym = training_data_set[:, :168]
@@ -181,7 +244,7 @@ def load_train_data_with_PCA_per_type_drop_column(which_column):
 
     scaler_rythym = StandardScaler()
     scaler_chroma = StandardScaler()
-    scaler_mfcc   = StandardScaler()
+    scaler_mfcc = StandardScaler()
 
     rythym = scaler_rythym.fit_transform(rythym)
     chroma = scaler_chroma.fit_transform(chroma)
@@ -204,7 +267,6 @@ def load_train_data_with_PCA_per_type_drop_column(which_column):
 
     return training_data_set, genres_labels, genres, scaler_rythym, scaler_chroma, scaler_mfcc \
         # pca_rythym, pca_chroma, pca_mfcc
-
 
 
 def load_test_data():

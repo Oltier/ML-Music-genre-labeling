@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
 
-from data import get_genres
+from data import get_genres, visualisation_data
 
 genres = ['Pop_Rock',
           'Electronic',
@@ -61,4 +61,17 @@ def histogram():
     plt.xticks(range(1, 11), genres, rotation='vertical')
     plt.yticks(np.arange(0, np.max(counts), 150))
     plt.xlim([0.5, 10.5])
-    plt.show()
+
+
+def plot_data():
+    training_data_set, genres_labels, genres = visualisation_data()
+    for i in genres:
+        i_th_label = np.where(genres_labels == i)[0]
+        i_th_data = training_data_set[i_th_label]
+        plt.figure(i)
+        plt.title(i)
+        plt.scatter(i_th_data[:, 0], i_th_data[:, 1], )
+        plt.show()
+
+
+# plot_data()
