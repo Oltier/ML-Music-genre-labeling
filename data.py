@@ -1,9 +1,7 @@
 import numpy as np
 import pandas as pd
-from imblearn.over_sampling import BorderlineSMOTE
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
-from sklearn.ensemble import IsolationForest
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.preprocessing import StandardScaler
@@ -134,7 +132,7 @@ def load_train_data_with_PCA_per_type():
 
     scaler_rythym = StandardScaler()
     scaler_chroma = StandardScaler()
-    scaler_mfcc   = StandardScaler()
+    scaler_mfcc = StandardScaler()
 
     rythym = scaler_rythym.fit_transform(rythym)
     chroma = scaler_chroma.fit_transform(chroma)
@@ -155,8 +153,23 @@ def load_train_data_with_PCA_per_type():
 
     # train_x = preprocessing.normalize(train_x, norm='l2')
 
-    return training_data_set, genres_labels, genres, scaler_rythym, scaler_chroma, scaler_mfcc \
-        # pca_rythym, pca_chroma, pca_mfcc
+    training_data_set = np.append(training_data_set, genres_labels[:, np.newaxis], 1)
+
+    number_of_cols = training_data_set.shape[1]
+    train, test = train_test_split(training_data_set, test_size=0.25, random_state=12,
+                                   stratify=training_data_set[:, number_of_cols - 1])
+    train_x = train[:, :number_of_cols - 1]
+    train_y = train[:, number_of_cols - 1]
+
+    # sm = SMOTE()
+    # x_train_res, y_train_res = sm.fit_resample(train_x, train_y)
+
+    # train_x = preprocessing.normalize(train_x, norm='l2')
+
+    test_x = test[:, :number_of_cols - 1]
+    test_y = test[:, number_of_cols - 1]
+
+    return train_x, train_y, test_x, test_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc
 
 
 def visualisation_data():
