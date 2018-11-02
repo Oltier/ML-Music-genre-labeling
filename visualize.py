@@ -44,11 +44,10 @@ def draw_confusion_matrix(cm: np.ndarray, classes, title='Confusion matrix', cma
 
 
 def plot_cnf(model, true_x, true_y):
-    print("---------------PERFORMANCE ANALYSIS FOR THE MODEL----------------\n")
     pred = model.predict(true_x)
     cnf_matrix = confusion_matrix(true_y, pred)
-    plt.figure()
-    draw_confusion_matrix(cnf_matrix, classes=genres, title='Confusion matrix')
+    fig = plt.figure(figsize=(5,5))
+    draw_confusion_matrix(cnf_matrix, classes=genres, title=r"$\bf{Figure\ 4.}$Confusion matrix")
 
 
 def histogram():
@@ -65,16 +64,16 @@ def histogram():
 
 def plot_data():
     training_data_set, genres_labels, genres = visualisation_data()
-    plt.figure(2)
+    fig = plt.figure(figsize=(10, 12))
+    fig.suptitle('Representatives by class', fontsize=16, y=1)
+    fig.tight_layout(rect=[0, 0.03, -1, 0.95])
     for i in genres:
-        temp = 520 + i
-        plt.subplot(temp)
+        plt.subplot(5, 2, i)
         i_th_label = np.where(genres_labels == i)[0]
         i_th_data = training_data_set[i_th_label]
-        plt.figure(i)
-        plt.title(i)
+        plt.title("Representatives of class {}".format(i))
         plt.scatter(i_th_data[:, 0], i_th_data[:, 1], )
+    plt.subplots_adjust(hspace=0.3)
     plt.show()
-
 
 # plot_data()

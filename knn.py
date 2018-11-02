@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import preprocessing
+from sklearn.metrics import f1_score, log_loss
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -33,8 +34,12 @@ knn = KNeighborsClassifier(n_neighbors=best_k)
 knn.fit(train_x, train_y)
 scores = cross_val_score(knn, train_x, train_y, cv=5, scoring='accuracy')
 print("Cross val accuracy: ", scores.mean(), scores.std())
-print("Training Score: {:.3f}".format(knn.score(train_x, train_y)))
-print("Test score: {:.3f}".format(knn.score(test_x, test_y)))
+preds = knn.predict_proba(test_x)
+preds = np.argmax(preds, axis=-1)
+print('Test Set F-score =  {0:.3f}'.format(f1_score(test_y, preds, average='weighted')))
+predictions_on_train = knn.predict_proba(train_x)
+log_loss_score = log_loss(train_y, predictions_on_train, eps=1e-15)
+print("Train logloss:", log_loss_score)
 
 plot_cnf(knn, test_x, test_y)
 

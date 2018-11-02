@@ -10,13 +10,15 @@ from visualize import plot_cnf
 
 train_x, train_y, test_x, test_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type()
 
+
+# TODO Check this out https://towardsdatascience.com/a-feature-selection-tool-for-machine-learning-in-python-b64dd23710f0
 logreg = LogisticRegression(solver='lbfgs', multi_class='multinomial', max_iter=4000, random_state=0, penalty='l2')
 logreg.fit(train_x, train_y)
 scores = cross_val_score(logreg, train_x, train_y, cv=5, scoring='accuracy')
 print("Cross val accuracy: ", scores.mean(), scores.std())
 preds = logreg.predict_proba(test_x)
 preds = np.argmax(preds, axis=-1)
-print('Test Set F-score =  {0:.3f}'.format(f1_score(test_y, preds, average='macro')))
+print('Test Set F-score =  {0:.3f}'.format(f1_score(test_y, preds, average='weighted')))
 predictions_on_train = logreg.predict_proba(train_x)
 asd = log_loss(train_y, predictions_on_train, eps=1e-15)
 print("Train logloss:", asd)

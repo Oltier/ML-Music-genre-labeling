@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from imblearn.over_sampling import SMOTE
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
@@ -53,7 +54,7 @@ def load_train_data_rythym_only():
     train_x = train[:, :number_of_cols - 1]
     train_y = train[:, number_of_cols - 1]
 
-    # sm = SMOTE()
+    sm = SMOTE()
     # x_train_res, y_train_res = sm.fit_resample(train_x, train_y)
 
     # train_x = preprocessing.normalize(train_x, norm='l2')
