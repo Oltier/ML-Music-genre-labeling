@@ -1,6 +1,5 @@
 import numpy as np
 from sklearn.svm import SVC
-import matplotlib.pyplot as plt
 
 from data import load_data_train_test_data, load_test_data, write_accuracy, write_logloss, get_pca
 from visualize import plot_cnf

@@ -3,7 +3,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import cross_val_score
 from sklearn.neural_network import MLPClassifier
 
-from data import load_data_train_test_data, load_test_data, write_accuracy, write_logloss, \
+from data import load_test_data, write_accuracy, write_logloss, \
     load_train_data_with_PCA_per_type
 from visualize import plot_cnf
 

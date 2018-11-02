@@ -55,7 +55,7 @@ def histogram():
     genres_labels = get_genres()
 
     plt.figure(1)
-    plt.title("Distribution of genres in the training data")
+    plt.title(r"$\bf{Figure\ 1.}$Distribution of genres")
     original_bins = np.arange(1, 12) - 0.5
     counts, bins, patches = plt.hist(genres_labels, bins=original_bins, rwidth=0.75)
     plt.xticks(range(1, 11), genres, rotation='vertical')

@@ -1,15 +1,14 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from sklearn import preprocessing
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 
-from data import load_data_train_test_data, load_test_data, write_accuracy, write_logloss, \
+from data import load_test_data, write_accuracy, write_logloss, \
     load_train_data_with_PCA_per_type
 from visualize import plot_cnf
 
 train_x, train_y, test_x, test_y, genres, scaler_rythym, scaler_chroma, scaler_mfcc = load_train_data_with_PCA_per_type()
-
 
 # results_knn = []
 # n_tests = np.arange(1, 50)
@@ -38,7 +37,6 @@ print("Training Score: {:.3f}".format(knn.score(train_x, train_y)))
 print("Test score: {:.3f}".format(knn.score(test_x, test_y)))
 
 plot_cnf(knn, test_x, test_y)
-
 
 test_data = load_test_data()
 
