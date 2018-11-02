@@ -65,13 +65,16 @@ def histogram():
 
 def plot_data():
     training_data_set, genres_labels, genres = visualisation_data()
+    plt.figure(2)
     for i in genres:
+        temp = 520 + i
+        plt.subplot(temp)
         i_th_label = np.where(genres_labels == i)[0]
         i_th_data = training_data_set[i_th_label]
         plt.figure(i)
         plt.title(i)
         plt.scatter(i_th_data[:, 0], i_th_data[:, 1], )
-        plt.show()
+    plt.show()
 
 
 # plot_data()

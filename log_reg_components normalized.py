@@ -2,6 +2,7 @@ import numpy as np
 from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
+from sklearn.metrics import log_loss
 from sklearn.model_selection import cross_val_score
 
 from data import load_test_data, write_accuracy, write_logloss, load_train_data_with_PCA_per_type
@@ -16,7 +17,9 @@ print("Cross val accuracy: ", scores.mean(), scores.std())
 preds = logreg.predict_proba(test_x)
 preds = np.argmax(preds, axis=-1)
 print('Test Set F-score =  {0:.3f}'.format(f1_score(test_y, preds, average='macro')))
-print("Test logreg score: {:.3f}".format(logreg.score(test_x, test_y)))
+predictions_on_train = logreg.predict_proba(train_x)
+asd = log_loss(train_y, predictions_on_train, eps=1e-15)
+print("Train logloss:", asd)
 
 # TODO Ha kéne confusion matrix, akkor előkapjuk ezt
 plot_cnf(logreg, test_x, test_y)
